@@ -30,15 +30,15 @@ import (
 	"sync"
 	"time"
 
+	"github.com/LucaHhx/nano/cluster/clusterpb"
+	"github.com/LucaHhx/nano/component"
+	"github.com/LucaHhx/nano/pipeline"
+	"github.com/LucaHhx/nano/publicity/env"
+	"github.com/LucaHhx/nano/publicity/log"
+	"github.com/LucaHhx/nano/publicity/message"
+	"github.com/LucaHhx/nano/scheduler"
+	"github.com/LucaHhx/nano/session"
 	"github.com/gorilla/websocket"
-	"github.com/lonng/nano/cluster/clusterpb"
-	"github.com/lonng/nano/component"
-	"github.com/lonng/nano/internal/env"
-	"github.com/lonng/nano/internal/log"
-	"github.com/lonng/nano/internal/message"
-	"github.com/lonng/nano/pipeline"
-	"github.com/lonng/nano/scheduler"
-	"github.com/lonng/nano/session"
 	"google.golang.org/grpc"
 )
 
@@ -68,7 +68,7 @@ type Node struct {
 	cluster   *cluster
 	handler   *LocalHandler
 	server    *grpc.Server
-	rpcClient *rpcClient
+	RpcClient *rpcClient
 
 	mu       sync.RWMutex
 	sessions map[int64]*session.Session
@@ -140,7 +140,7 @@ func (n *Node) initNode() error {
 
 	// Initialize the gRPC server and register service
 	n.server = grpc.NewServer()
-	n.rpcClient = newRPCClient()
+	n.RpcClient = newRPCClient()
 	clusterpb.RegisterMemberServer(n.server, n)
 
 	go func() {
@@ -161,9 +161,9 @@ func (n *Node) initNode() error {
 			},
 		}
 		n.cluster.members = append(n.cluster.members, member)
-		n.cluster.setRpcClient(n.rpcClient)
+		n.cluster.setRpcClient(n.RpcClient)
 	} else {
-		pool, err := n.rpcClient.getConnPool(n.AdvertiseAddr)
+		pool, err := n.RpcClient.getConnPool(n.AdvertiseAddr)
 		if err != nil {
 			return err
 		}
@@ -209,7 +209,7 @@ func (n *Node) Shutdown() {
 		close(n.keepaliveExit)
 	}
 	if !n.IsMaster && n.AdvertiseAddr != "" {
-		pool, err := n.rpcClient.getConnPool(n.AdvertiseAddr)
+		pool, err := n.RpcClient.getConnPool(n.AdvertiseAddr)
 		if err != nil {
 			log.Println("Retrieve master address error", err)
 			goto EXIT
@@ -312,7 +312,7 @@ func (n *Node) findOrCreateSession(sid int64, gateAddr string) (*session.Session
 	s, found := n.sessions[sid]
 	n.mu.RUnlock()
 	if !found {
-		conns, err := n.rpcClient.getConnPool(gateAddr)
+		conns, err := n.RpcClient.getConnPool(gateAddr)
 		if err != nil {
 			return nil, err
 		}
@@ -430,9 +430,9 @@ func (n *Node) keepalive() {
 		return
 	}
 	heartbeat := func() {
-		pool, err := n.rpcClient.getConnPool(n.AdvertiseAddr)
+		pool, err := n.RpcClient.getConnPool(n.AdvertiseAddr)
 		if err != nil {
-			log.Println("rpcClient master conn", err)
+			log.Println("RpcClient master conn", err)
 			return
 		}
 		masterCli := clusterpb.NewMasterClient(pool.Get())

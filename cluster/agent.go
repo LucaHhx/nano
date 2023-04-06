@@ -28,14 +28,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/lonng/nano/internal/codec"
-	"github.com/lonng/nano/internal/env"
-	"github.com/lonng/nano/internal/log"
-	"github.com/lonng/nano/internal/message"
-	"github.com/lonng/nano/internal/packet"
-	"github.com/lonng/nano/pipeline"
-	"github.com/lonng/nano/scheduler"
-	"github.com/lonng/nano/session"
+	"github.com/LucaHhx/nano/pipeline"
+	"github.com/LucaHhx/nano/publicity/codec"
+	"github.com/LucaHhx/nano/publicity/env"
+	"github.com/LucaHhx/nano/publicity/log"
+	"github.com/LucaHhx/nano/publicity/message"
+	"github.com/LucaHhx/nano/publicity/packet"
+	"github.com/LucaHhx/nano/scheduler"
+	"github.com/LucaHhx/nano/session"
 )
 
 const (

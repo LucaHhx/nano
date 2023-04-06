@@ -1,6 +1,6 @@
 package onegate
 
-import "github.com/lonng/nano/component"
+import "github.com/LucaHhx/nano/component"
 
 var (
 	// All services in master server

@@ -25,9 +25,9 @@ import (
 	"net"
 	"sync"
 
-	"github.com/lonng/nano/internal/codec"
-	"github.com/lonng/nano/internal/message"
-	"github.com/lonng/nano/internal/packet"
+	"github.com/LucaHhx/nano/publicity/codec"
+	"github.com/LucaHhx/nano/publicity/message"
+	"github.com/LucaHhx/nano/publicity/packet"
 	"google.golang.org/protobuf/proto"
 )
 

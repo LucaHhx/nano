@@ -26,15 +26,15 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/lonng/nano/serialize"
-	"github.com/lonng/nano/serialize/protobuf"
+	"github.com/LucaHhx/nano/serialize"
+	"github.com/LucaHhx/nano/serialize/protobuf"
 	"google.golang.org/grpc"
 )
 
 var (
 	Wd                 string                   // working path
 	Die                chan bool                // wait for end application
-	Heartbeat          time.Duration            // Heartbeat internal
+	Heartbeat          time.Duration            // Heartbeat publicity
 	CheckOrigin        func(*http.Request) bool // check origin when websocket enabled
 	Debug              bool                     // enable Debug
 	WSPath             string                   // WebSocket path(eg: ws://127.0.0.1/WSPath)

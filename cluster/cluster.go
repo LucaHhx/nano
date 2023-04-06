@@ -26,9 +26,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/lonng/nano/cluster/clusterpb"
-	"github.com/lonng/nano/internal/env"
-	"github.com/lonng/nano/internal/log"
+	"github.com/LucaHhx/nano/cluster/clusterpb"
+	"github.com/LucaHhx/nano/publicity/env"
+	"github.com/LucaHhx/nano/publicity/log"
 )
 
 // cluster represents a nano cluster, which contains a bunch of nano nodes

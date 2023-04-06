@@ -32,17 +32,17 @@ import (
 	"sync"
 	"time"
 
+	"github.com/LucaHhx/nano/cluster/clusterpb"
+	"github.com/LucaHhx/nano/component"
+	"github.com/LucaHhx/nano/pipeline"
+	"github.com/LucaHhx/nano/publicity/codec"
+	"github.com/LucaHhx/nano/publicity/env"
+	"github.com/LucaHhx/nano/publicity/log"
+	"github.com/LucaHhx/nano/publicity/message"
+	"github.com/LucaHhx/nano/publicity/packet"
+	"github.com/LucaHhx/nano/scheduler"
+	"github.com/LucaHhx/nano/session"
 	"github.com/gorilla/websocket"
-	"github.com/lonng/nano/cluster/clusterpb"
-	"github.com/lonng/nano/component"
-	"github.com/lonng/nano/internal/codec"
-	"github.com/lonng/nano/internal/env"
-	"github.com/lonng/nano/internal/log"
-	"github.com/lonng/nano/internal/message"
-	"github.com/lonng/nano/internal/packet"
-	"github.com/lonng/nano/pipeline"
-	"github.com/lonng/nano/scheduler"
-	"github.com/lonng/nano/session"
 )
 
 var (
@@ -220,7 +220,7 @@ func (h *LocalHandler) handle(conn net.Conn) {
 		members := h.currentNode.cluster.remoteAddrs()
 		for _, remote := range members {
 			log.Println("Notify remote server", remote)
-			pool, err := h.currentNode.rpcClient.getConnPool(remote)
+			pool, err := h.currentNode.RpcClient.getConnPool(remote)
 			if err != nil {
 				log.Println("Cannot retrieve connection pool for address", remote, err)
 				continue
@@ -363,7 +363,7 @@ func (h *LocalHandler) remoteProcess(session *session.Session, msg *message.Mess
 			session.Router().Bind(service, remoteAddr)
 		}
 	}
-	pool, err := h.currentNode.rpcClient.getConnPool(remoteAddr)
+	pool, err := h.currentNode.RpcClient.getConnPool(remoteAddr)
 	if err != nil {
 		log.Println(err)
 		return

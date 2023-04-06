@@ -27,7 +27,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/lonng/nano/internal/env"
+	"github.com/LucaHhx/nano/publicity/env"
 	"google.golang.org/grpc"
 )
 
@@ -39,7 +39,7 @@ type connPool struct {
 type rpcClient struct {
 	sync.RWMutex
 	isClosed bool
-	pools    map[string]*connPool
+	Pools    map[string]*connPool
 }
 
 func newConnArray(maxSize uint, addr string) (*connPool, error) {
@@ -92,7 +92,7 @@ func (a *connPool) Close() {
 
 func newRPCClient() *rpcClient {
 	return &rpcClient{
-		pools: make(map[string]*connPool),
+		Pools: make(map[string]*connPool),
 	}
 }
 
@@ -102,7 +102,7 @@ func (c *rpcClient) getConnPool(addr string) (*connPool, error) {
 		c.RUnlock()
 		return nil, errors.New("rpc client is closed")
 	}
-	array, ok := c.pools[addr]
+	array, ok := c.Pools[addr]
 	c.RUnlock()
 	if !ok {
 		var err error
@@ -117,7 +117,7 @@ func (c *rpcClient) getConnPool(addr string) (*connPool, error) {
 func (c *rpcClient) createConnPool(addr string) (*connPool, error) {
 	c.Lock()
 	defer c.Unlock()
-	array, ok := c.pools[addr]
+	array, ok := c.Pools[addr]
 	if !ok {
 		var err error
 		// TODO: make conn count configurable
@@ -125,7 +125,7 @@ func (c *rpcClient) createConnPool(addr string) (*connPool, error) {
 		if err != nil {
 			return nil, err
 		}
-		c.pools[addr] = array
+		c.Pools[addr] = array
 	}
 	return array, nil
 }
@@ -135,7 +135,7 @@ func (c *rpcClient) closePool() {
 	if !c.isClosed {
 		c.isClosed = true
 		// close all connections
-		for _, array := range c.pools {
+		for _, array := range c.Pools {
 			array.Close()
 		}
 	}

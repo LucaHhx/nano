@@ -1,4 +1,4 @@
-module github.com/lonng/nano
+module github.com/LucaHhx/nano
 
 go 1.12
 

@@ -1,3 +1,4 @@
+//go:build benchmark
 // +build benchmark
 
 package io
@@ -11,11 +12,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/lonng/nano"
-	"github.com/lonng/nano/benchmark/testdata"
-	"github.com/lonng/nano/component"
-	"github.com/lonng/nano/serialize/protobuf"
-	"github.com/lonng/nano/session"
+	"github.com/LucaHhx/nano"
+	"github.com/LucaHhx/nano/benchmark/testdata"
+	"github.com/LucaHhx/nano/component"
+	"github.com/LucaHhx/nano/serialize/protobuf"
+	"github.com/LucaHhx/nano/session"
 )
 
 const (
@@ -23,7 +24,6 @@ const (
 	conc = 1000              // concurrent client count
 )
 
-//
 type TestHandler struct {
 	component.Base
 	metrics int32

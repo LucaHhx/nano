@@ -18,8 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package runtime
+package message
 
-import "github.com/lonng/nano/cluster"
+import "github.com/LucaHhx/nano/publicity/env"
 
-var CurrentNode *cluster.Node
+func Serialize(v interface{}) ([]byte, error) {
+	if data, ok := v.([]byte); ok {
+		return data, nil
+	}
+	data, err := env.Serializer.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}

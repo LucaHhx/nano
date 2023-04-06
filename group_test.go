@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/lonng/nano/session"
+	"github.com/LucaHhx/nano/session"
 )
 
 func TestChannel_Add(t *testing.T) {
@@ -15,8 +15,14 @@ func TestChannel_Add(t *testing.T) {
 	for i := 0; i < paraCount; i++ {
 		go func(id int) {
 			s := session.New(nil)
-			s.Bind(int64(id + 1))
-			c.Add(s)
+			err := s.Bind(int64(id + 1))
+			if err != nil {
+				return
+			}
+			err = c.Add(s)
+			if err != nil {
+				return
+			}
 			w <- true
 		}(i)
 	}
@@ -35,7 +41,10 @@ func TestChannel_Add(t *testing.T) {
 	}
 
 	// leave
-	c.LeaveAll()
+	err := c.LeaveAll()
+	if err != nil {
+		return
+	}
 	if c.Count() != 0 {
 		t.Fail()
 	}

@@ -1,10 +1,9 @@
 package codec
 
 import (
+	. "github.com/LucaHhx/nano/publicity/packet"
 	"reflect"
 	"testing"
-
-	. "github.com/lonng/nano/internal/packet"
 )
 
 func TestPack(t *testing.T) {
